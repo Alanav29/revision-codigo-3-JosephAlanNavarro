@@ -1,63 +1,94 @@
 // Tenemos un li de productos
 
 const productos = [
-  {nombre: "Zapato negro", tipo: "zapato", color: "negro", img: "./taco-negro.jpg"},
-  {nombre: "Zapato azul", tipo: "zapato", color: "azul", img: "./taco-azul.jpg"},
-  {nombre: "Bota negra", tipo: "bota", color: "negro", img: "./bota-negra.jpg"},
-  {nombre: "Bota azul", tipo: "bota", color: "azul", img: "./bota-azul.jpg"},
-  {nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg"}
-]
+  {
+    nombre: "Zapato negro",
+    tipo: "zapato",
+    color: "negro",
+    img: "./taco-negro.jpg",
+  },
+  {
+    nombre: "Zapato azul",
+    tipo: "zapato",
+    color: "azul",
+    img: "./taco-azul.jpg",
+  },
+  {
+    nombre: "Bota negra",
+    tipo: "bota",
+    color: "negro",
+    img: "./bota-negra.jpg",
+  },
+  { nombre: "Bota azul", tipo: "bota", color: "azul", img: "./bota-azul.jpg" },
+  {
+    nombre: "Zapato rojo",
+    tipo: "zapato",
+    color: "rojo",
+    img: "./zapato-rojo.jpg",
+  },
+];
 
-const li = document.getElementsByName("lista-de-productos")
-const $i = document.querySelector('.input');
+// Cambio nombre variables
+const listaProductosRef = document.querySelector("#lista-de-productos");
+const busquedaInput = document.querySelector("#input-busqueda");
 
-for (let i = 0; i < productos.length; i++) {
-  var d = document.createElement("div")
-  d.classList.add("producto")
+//Se cambia var por let y se renombran variables y se colocan en la funcion mostar productos
+const mostarProductos = (productos) => {
+  for (let i = 0; i < productos.length; i++) {
+    let nuevoDiv = document.createElement("div");
+    nuevoDiv.classList.add("producto");
 
-  var ti = document.createElement("p")
-  ti.classList.add("titulo")
-  ti.textContent = productos[i].nombre
-  
-  var imagen = document.createElement("img");
-  imagen.setAttribute('src', productos[i].img);
+    let tituloProducto = document.createElement("p");
+    tituloProducto.classList.add("titulo");
+    tituloProducto.textContent = productos[i].nombre;
 
-  d.appendChild(ti)
-  d.appendChild(imagen)
+    let imagen = document.createElement("img");
+    imagen.setAttribute("src", productos[i].img);
 
-  li.appendChild(d)
-}
+    nuevoDiv.appendChild(tituloProducto);
+    nuevoDiv.appendChild(imagen);
 
-displayProductos(productos)
-const botonDeFiltro = document.querySelector("button");
+    listaProductosRef.appendChild(nuevoDiv);
+  }
+};
 
-botonDeFiltro.onclick = function() {
-  while (li.firstChild) {
-    li.removeChild(li.firstChild);
+// Correcion de funcion filtrado
+const filtrado = (productos, texto) => {
+  return productos.filter(
+    (item) => item.tipo.includes(texto) || item.color.includes(texto)
+  );
+};
+
+mostarProductos(productos);
+
+const botonDeFiltro = document.querySelector("#boton-busqueda");
+
+botonDeFiltro.onclick = function () {
+  while (listaProductosRef.firstChild) {
+    listaProductosRef.removeChild(listaProductosRef.firstChild);
   }
 
-  const texto = $i.value;
+  const texto = busquedaInput.value;
   console.log(texto);
-  const productosFiltrados = filtrado(productos, texto );
+  const productosFiltrados = filtrado(productos, texto);
 
-  for (let i = 0; i < productosFiltrados.length; i++) {
-    var d = document.createElement("div")
-    d.classList.add("producto")
-  
-    var ti = document.createElement("p")
-    ti.classList.add("titulo")
-    ti.textContent = productosFiltrados[i].nombre
-    
-    var imagen = document.createElement("img");
-    imagen.setAttribute('src', productosFiltrados[i].img);
-  
-    d.appendChild(ti)
-    d.appendChild(imagen)
-  
-    li.appendChild(d)
-  }
-}
+  mostarProductos(productosFiltrados);
 
-const filtrado = (productos = [], texto) => {
-  return productos.filter(item => item.tipo.includes(texto) || item.color.includes(texto));
-}  
+  // Se comenta esta parte ya que se puede reutilizar la funcion mostrar prodcutos
+  // for (let i = 0; i < productosFiltrados.length; i++) {
+  //   var d = document.createElement("div");
+  //   d.classList.add("producto");
+
+  //   var ti = document.createElement("p");
+  //   ti.classList.add("titulo");
+  //   ti.textContent = productosFiltrados[i].nombre;
+
+  //   var imagen = document.createElement("img");
+  //   imagen.setAttribute("src", productosFiltrados[i].img);
+
+  //   d.appendChild(ti);
+  //   d.appendChild(imagen);
+
+  //   li.appendChild(d);
+  // }
+};
